@@ -69,6 +69,30 @@
       font-weight: bold;
       text-decoration: none
     }
+    #room_container {
+      position: absolute;
+      background-color: #E6E6E6;
+      width: 100%;
+      height: 100%;
+      vertical-align: middle;
+      text-align: center;
+      display: block;
+      visibility: visible;
+      z-index: 1;
+    }
+    #room_container.hide {
+      visibility: hidden;
+      z-index: -1;
+    }
+    #room_container .rooms {
+      
+    }
+    #room_container .rooms a {
+      margin-right: 10px;
+    }
+    #room_container .title {
+      margin-top: 10%;
+    }
   </style>
 </head>
 <body>
@@ -82,11 +106,24 @@
   <div id="videos">
     <video id="me" autoplay></video>
   </div>
-  <div id="files">
+  <div id="files"></div>
+
+  <div id="room_container">
+    <h1 class="title">选择房间进入</h1>
+    <div class="rooms">
+        <a href="#1000" target="blank">房间#1000</a>
+        <a href="#1001" target="blank">房间#1001</a>
+        <a href="#1002" target="blank">房间#1002</a>
+    </div>
   </div>
 </body>
 <script type="text/javascript" src="/SkyRTC-client.js"></script>
 <script type="text/javascript">
+  if (!window.location.hash) {
+    throw new Error('没有房间号');
+  }
+  room_container.classList.add('hide');
+
   var videos = document.getElementById("videos");
   var sendBtn = document.getElementById("sendBtn");
   var msgs = document.getElementById("msgs");
@@ -214,6 +251,6 @@
     msgs.appendChild(p);
   });
   //连接WebSocket服务器
-  rtc.connect("ws:" + window.location.href.substring(window.location.protocol.length).split('#')[0], window.location.hash.slice(1));
+  rtc.connect("wss:" + window.location.href.substring(window.location.protocol.length).split('#')[0], window.location.hash.slice(1));
 </script>
 </html>

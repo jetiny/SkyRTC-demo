@@ -1,11 +1,21 @@
 var express = require('express');
+var fs = require('fs');
 var app = express();
-var server = require('http').createServer(app);
+var server = require('https').createServer({
+	key : fs.readFileSync('./privatekey.pem'),
+	cert: fs.readFileSync('./certificate.pem')
+}, app);
 var SkyRTC = require('skyrtc').listen(server);
 var path = require("path");
 
-var port = process.env.PORT || 3000;
-server.listen(port);
+var port = process.env.PORT || 8778;
+server.listen(port, function (err) {
+	if (err) {
+		console.error(err);
+		return ;
+	}
+	console.log('listen at : https://localhost:'+port);
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 

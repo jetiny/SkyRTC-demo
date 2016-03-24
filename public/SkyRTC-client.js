@@ -133,6 +133,7 @@ var SkyRTC = function() {
         });
 
         this.on("_ice_candidate", function(data) {
+            // console.log('_ice_candidate', data);
             var candidate = new nativeRTCIceCandidate(data);
             var pc = that.peerConnections[data.socketId];
             pc.addIceCandidate(candidate);
